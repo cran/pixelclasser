@@ -7,15 +7,14 @@
 plot_rule(rule, label = "", ...)
 }
 \arguments{
-\item{rule}{an object of class \code{pixel_rule} produced by
-\code{define_rule()}.}
+\item{rule}{an object of class \code{"pixel_rule"} produced by
+\code{pixel_rule()}.}
 
 \item{label}{a string to label the line. It is attached at the coordinates of
 the second point used to define the line.}
 
-\item{\dots}{additional graphical parameters passed to the underlying
-\code{lines()} function, for example to define the line colour or dashing
-style. They are also used for the line label.}
+\item{\dots}{additional graphical parameters passed to the underlying graphic
+functions, for example to define the line colour or dashing style.}
 }
 \value{
 The function does not return any value.
@@ -25,16 +24,16 @@ This function draws the line that defines a rule on the plot created by
 \code{plot_rgb_plane()}.
 }
 \details{
-The function uses the information stored in the \code{pixel_rule
-  object} to plot the line.
+The function uses the information stored in the \code{"pixel_rule"}
+  object to plot the line.
 
-  Use the \dots to set the colour and other characteristics of the line. Use
-  any character string understood by \code{col2rgb()}.
+  Use the \dots to set the colour and other characteristics of the line. For
+  colours use any character string understood by \code{col2rgb()}.
   
-  Labels can be added to the rule using \code{label_rule()}.
+  A label can be added to the line using \code{label_rule()}.
 }
 \examples{
-rule_01 <- define_rule("rule_01", "g", "b",
+rule_01 <- pixel_rule("rule_01", "g", "b",
                       list(c(0.345, 1/3), c(0.40, 0.10)), "<")
 
 plot_rgb_plane("g", "b")
@@ -42,6 +41,6 @@ plot_rule(rule_01, col = "green")
 
 }
 \seealso{
-\code{\link{plot_rgb_plane}}, \code{\link{define_rule}},
+\code{\link{plot_rgb_plane}}, \code{\link{pixel_rule}},
   \code{\link{label_rule}} \code{\link[grDevices]{col2rgb}}
 }

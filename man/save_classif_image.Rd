@@ -7,23 +7,24 @@
 save_classif_image(classified_image, file_name, ...)
 }
 \arguments{
-\item{classified_image}{an object of class \code{classified_image}.}
+\item{classified_image}{an object of class \code{"pixel_classified_image"}.}
 
 \item{file_name}{a character string with the name of the output file,
 including the extension.}
 
 \item{...}{further parameters to pass to functions \code{writeJPG} and
-\code{writeTIFF}. If void, the default values of these functions are used.}
+\code{writeTIFF}. If not used, the default values of these functions are
+used.}
 }
 \value{
 It does not return anything, only creates the file.
 }
 \description{
-Creates an image file in TIFF or JPEG format from an array of class
-\code{classified_image}.
+Creates an image file in JPEG or TIFF format from an object of class
+\code{"pixel_classified_image"}.
 }
 \details{
-The type of the output file (jpeg or tiff) is selected from the
+The type of the output file (JPEG or TIFF) is selected from the
   extension included in the file name. It must be one of \code{("jpg", "JPG",
   "jpeg", "JPEG", "tif", "TIF", "tiff", "TIFF")}.
 

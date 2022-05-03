@@ -1,37 +1,38 @@
 #' Places a line on the rgb plot
 #'
-#' A wrapper function for \code{graphics::locator} that makes the creation
-#' of rules easier.
+#' A wrapper function for \code{graphics::locator} that helps in creating rules.
 #'
 #' @param x_axis a character string indicating the colour variable that
 #'   corresponds to the x axis, one of \code{"r"}, \code{"g"} or \code{"b"}.
 #' @param y_axis a character string indicating the colour variable that
 #'   corresponds to the y axis, one of \code{"r"}, \code{"g"} or \code{"b"}.
 #' @param line_type a character string indicating that the line is vertical
-#'   \code{"v"}, horizontal \code{"h"} or free (\code{"f"}, the default).
+#'   (\code{"v"}), horizontal (\code{"h"}) or free (\code{"f"}, the default).
 #'
-#' @return A list of class \code{rule_points} containing the following elements:
+#' @return An object of class \code{"pixel_rule_points"} containing these
+#'   elements:
 #' \itemize{
 #' \item \code{x_axis}: a character string containing the colour variable
-#'   selected as \code{x} axis.
+#'   selected as \code{x} axis (one of "r, "g or "b").
 #' \item \code{y_axis}: a character string containing the colour variable
 #'   selected as \code{y} axis.
-#' \item \code{first_point}: coordinates of the start point of the line.
-#' \item \code{second_point}: coordinates of the end point of the line.
 #' }
-#' @details This function calls \code{graphics::locator} allowing to select two
-#'   points, plots the line joining these points and returns a list
-#'   containing their coordinates. The coordinates are rearranged to
-#'   pass them to \code{define_rule()}.
+#' 
+#' @details This function calls \code{graphics::locator} on a previously plotted
+#'   rgb plane to select two points with the mouse. Then it plots the line
+#'   joining them and returns an object of class \code{"pixel_rule_object"}.
+#'   These objects are passed as parameters to \code{pixel_rule()} to create
+#'   \code{"pixel_rule"} objects.
 #'
 #'   True horizontal and vertical lines are difficult to create by hand. In
 #'   these cases, specifying \code{"vertical"} or \code{"horizontal"} (partial
-#'   match allowed, i e "h") will copy the appropriate coordinate value from the
-#'   first point to the second. Note that this is done after \code{locator()}
-#'   returns, so the plot will show the line joining the original points, not
-#'   the corrected ones. Use \code{plot_rule()} to see corrected line.
+#'   match allowed, i.e. \code{"h"}) will copy the appropriate coordinate value
+#'   from the first point to the second to make them the same. Note that this is
+#'   done after \code{locator()} returns, so the plot will show the line joining
+#'   the original points, not the corrected ones. Use \code{plot_rule()} to see
+#'   the corrected line.
 #'
-#' @seealso \code{\link[graphics]{locator}}, \code{\link{define_rule}},
+#' @seealso \code{\link[graphics]{locator}}, \code{\link{pixel_rule}},
 #'   \code{\link{plot_rule}}, \code{\link{plot_rgb_plane}}
 #' @examples
 #' \dontrun{
@@ -45,16 +46,20 @@
 place_rule <- function(x_axis, y_axis, line_type = 'f'){
 
   # Parameter tests ------------------------------------------------------------
-  # Standard parameter error is thrown after the selecting the line points, so
-  # this test is needed to stop the function early.
   if (missing(x_axis) | missing(y_axis)){
-    stop('X or Y colour variable missing', call. = FALSE)
+    stop('X or Y colour variable is missing', call. = FALSE)
   } else {
-    if (sum((c(x_axis, y_axis) %in% c("r", "g", "b"))) != 2){
-      stop('Colour variables must be "r", "g" or "b"', call. = FALSE)
+    if (!(x_axis %in% c("r", "g", "b"))){
+      stop('X colour variable is "', x_axis, 
+           '", but must be one of "r", "g" or "b".', call. = FALSE)
+    }
+    if (!(y_axis %in% c("r", "g", "b"))){
+      stop('Y colour variable is "', y_axis, 
+           '", but must be one of "r", "g" or "b".', call. = FALSE)
     }
     if (!(line_type %in% c("h", "v", "f"))){
-      stop('line_type must be one of "v", "h" or "f"', call. = FALSE)
+      stop('Parameter "line_type" is "', line_type, 
+           '", but must be one of "v", "h" or "f".', call. = FALSE)
     }
   }
   
@@ -64,7 +69,7 @@ place_rule <- function(x_axis, y_axis, line_type = 'f'){
   
   result <- vector(mode = "list", length = 4)
   names(result) <- c("x_axis", "y_axis", "first_point", "second_point")
-  class(result) <- "rule_points"
+  class(result) <- "pixel_rule_points"
   
   coordinates <- graphics::locator(n = 2, type = "l")
   result$first_point <- c(coordinates$x[1], coordinates$y[1])
@@ -83,4 +88,33 @@ place_rule <- function(x_axis, y_axis, line_type = 'f'){
   }
   
   return(result)
+}
+
+# is. --------------------------------------------------------------------------
+#' @rdname place_rule
+#' @param x the R object being tested
+#' @export
+
+is.rule_points<- function(x){
+  return (inherits(x, "pixel_rule_points"))
+}
+
+# print ------------------------------------------------------------------------
+#' @export
+
+print.rule_points <- function(x,
+                              digits = NULL,
+                              quote = TRUE,
+                              na.print = NULL,
+                              print.gap = NULL,
+                              right = FALSE,
+                              max = NULL,
+                              useSource = TRUE,
+                              ...){
+  
+  cat('Colour variables: "', x$x_axis, '", "', x$y_axis, '"\n', sep = '')
+  cat('First point: (', x$first_point['x'],', ', x$first_point['y'], ')\n',
+      sep = '')
+  cat('Second point: (', x$second_point['x'],', ', x$second_point['y'], ')\n',
+      sep = '')
 }

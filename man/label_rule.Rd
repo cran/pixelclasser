@@ -7,13 +7,13 @@
 label_rule(rule, label = "", shift = c(0, 0), ...)
 }
 \arguments{
-\item{rule}{an object of class \code{pixel_rule}.}
+\item{rule}{an object of class \code{"pixel_rule"}.}
 
 \item{label}{a string to label the line. It is attached at the coordinates of
 the start (first point) of the line.}
 
 \item{shift}{a numeric vector to set the displacement of the label from the
-start of the line. Expressed in graph units, defaults to c(0, 0).}
+start of the line. Expressed in graph units, defaults to \code{c(0, 0)}.}
 
 \item{\dots}{additional graphical parameters passed to the underlying
 \code{graphics::text()} function.}
@@ -22,22 +22,21 @@ start of the line. Expressed in graph units, defaults to c(0, 0).}
 The function does not return any value.
 }
 \description{
-This function adds a label to the line that represents a rule on a plot
-created by \code{plot_rgb_plane()}.
+This function adds a label to a line representing a rule on the plots created
+by \code{plot_rgb_plane()}.
 }
 \details{
-The function uses the information stored in the pixel_rule object to
-  plot the label at the start of the line. The \code{shift} values, expressed
-  in plot coordinates, are added to the coordinates of that point to place
-  the label elsewhere. Note that \dots can be used to pass values for the
-  \code{adj} parameter to the underlying \code{graphics::text()} function,
-  which also modifies the position of the label.
-  
-  Use a character string understood by \code{grDevices::col2rgb()} to set
-  the colour of the label.
+The function uses the information stored in \code{"pixel_rule"}
+  objects to label the line at its start point. The \code{shift} values,
+  expressed in plot coordinates, are added to the coordinates of that point
+  to place the label elsewhere. Note that \dots can be used to pass
+  additional parameters (\code{pos} and \code{adj}) to the underlying
+  \code{graphics::text()} function, to further adjust the position of the
+  label. Pass a character string understood by \code{grDevices::col2rgb()} to
+  set the colour of the label (\code{col}).
 }
 \examples{
-rule_01 <- define_rule("rule_01", "g", "b",
+rule_01 <- pixel_rule("rule_01", "g", "b",
                        list(c(0.1, 0.8), c(0.40, 0.10)), "<")
 plot_rgb_plane("g", "b")
 
@@ -55,6 +54,6 @@ label_rule(rule_01, label = expression('R'[1]*''), shift = c(0.3, -0.7),
 
 }
 \seealso{
-\code{\link{plot_rgb_plane}}, \code{\link{define_rule}},
+\code{\link{plot_rgb_plane}}, \code{\link{pixel_rule}},
   \code{\link[grDevices]{col2rgb}}, \code{\link[graphics]{text}}
 }

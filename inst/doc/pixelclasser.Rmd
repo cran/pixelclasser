@@ -25,7 +25,7 @@ This package contains a set of tools to classify the pixels of digital images in
 * classify the pixels and to store this information in R objects,
 * save these as image files.
 
-It is a simple version of the multivariate technique known as Support Vector Machine (Cortes and Vapnik, 1995; Bennet and Campbell, 2000), adapted to this particular use. A manuscript describing the package `pixelclasser` and its use in real research has been submitted to Methods in Ecology and Evolution (Real et al., 2021). It also describes the procedure in more detail than the next paragraphs. 
+It is a simple version of the multivariate technique known as Support Vector Machine (Cortes and Vapnik, 1995; Bennet and Campbell, 2000), adapted to this particular use.
 
 ### The procedure ###
 
@@ -69,9 +69,9 @@ library(pixelclasser)
   
 ### Image loading and transforming ###
 
-These are the images included in the package as examples. The goal is to identify the pixels corresponding to dead, oak and ivy leaves that compose the image. The small images are fragments of the main image and are the test set. In an actual case, more than one image per category should be used to represent the whole variation of the category:
+Figure 1 shows the example images included in the package. The goal of this example session is to classify the pixels of the example image into dead, oak and ivy categories. The small images are fragments of the main image and are the test set, i.e. representatives of each class. In a real case, a more extensive test set should be used to represent the whole variation of the categories.
 
-```{r echo=FALSE, fig.align='center', out.width = "50%"}
+```{r echo=FALSE, fig.cap = 'Figure 1. The example image and the test images.', fig.align='center', out.width = "50%"}
 knitr::include_graphics('../inst/extdata/ExampleImages.png')
 ```
 
@@ -100,27 +100,27 @@ green <- "#559800ff"
 
 The next step is to visualize the distribution of the pixels in *rgb* space, but only two variables are needed. Any pair of variables would do, but a particular combination might produce a better display of the clusters. It is a matter of try the three possible combinations to select the most convenient.
 
-Plotting the pixels is a two-step procedure: a void plot is drawn first and then the pixels are added to the plot (the use of a transparent black colour, `#00000008`, creates a "density plot" effect):
+Plotting the pixels is a two-step procedure (Fig. 2): a void plot is drawn (using `plot_rgb_plane()`) and then the pixels are added to the plot (the use of a transparent black colour, `#00000008`, creates a "density plot" effect):
   
-```{r, out.width = "50%", fig.align="center", out.width = "50%"}
+```{r, out.width = "50%", fig.cap = "Figure 2. The plane of variables r and b, with the pixels of the example image.", fig.align="center", out.width = "50%"}
 plot_rgb_plane("r", "b", main = "Image: ivy and oak")
 plot_pixels(ivy_oak_rgb, "r", "b", col = transparent_black)
 ```
 
-The coloured lines are an aid to interpret the graph: no pixels could be found outside the blue lines, and the red lines converging in the barycentre of the triangle *(r, g, b)* = (1/3, 1/3, 1/3), define the areas where a colour is dominant. Note that graphical parameters (`main` in this example) can be passed to the function to change the final appearance of the graph. All the auxiliary lines can be deleted, as in the following example, which uses different colour variables to create the graph.
+The coloured lines are an aid to interpret the graph: no pixels could be found outside the blue lines, and the red lines converging in the barycentre of the triangle *(r, g, b)* = (1/3, 1/3, 1/3), define the areas where a colour is dominant. Note that graphical parameters (`main` to set the title of Fig. 2) can be passed to the function to change the final appearance of the graph. All the auxiliary lines are optional. Figure 3 omits them and uses different colour variables to plot the pixels.
 
-```{r, fig.align="center", out.width = "50%"}
-plot_rgb_plane("r", "g", plot_limits = F, plot_guides = F, plot_grid = F)
+```{r, fig.cap = "Figure 3. Another representation of the pixels of the example figure. The auxiliary lines were omitted and the colour variables changed.", fig.align="center", out.width = "50%"}
+plot_rgb_plane("r", "g", plot_limits = FALSE, plot_guides = FALSE, plot_grid = FALSE)
 plot_pixels(ivy_oak_rgb, "r", "g", col = transparent_black)
 ```
 
 There are two clear pixel clusters and a small, but noticeable, quantity of pixels in between. Also visible are linear patterns that are artefacts created because the *RGB* data are discrete variables (eight bit in the most common cases). These are more appreciable in the following graphs, which are restricted to the area occupied by the pixels. In the following examples *g* and *b* will be used as variables *x* and *y* for plotting and pixel classification. 
 
-### Adding the pixels of the test images ###
+### Plotting the pixels of the test images ###
 
-The following code plots the pixels of the example image on the *gb* plane and then adds the pixels of the test images, using arbitrary colours. Here, the graphic parameters `xlim` and `ylim` were used to limit the extent of the plot to the area occupied by the pixels:
+The following code plots the pixels of the example image on the *gb* plane and then adds the pixels of the test images, using arbitrary colours (Fig. 4). Usually, only the pixels of the test images are plotted before placing the rules, but there both the "problem" and test images were plotted (note that real studies involve many problem images, not one). This was done to assess the quality of the test images (see below).  To create the figure, the graphic parameters `xlim` and `ylim` were used to limit the extent of the plot to the area occupied by the pixels:
   
-```{r, fig.align="center", out.width = "50%"}
+```{r, fig.align="center", out.width = "50%", fig.cap="Figure 4. The pixels of the dead (brown), ivy (blue) and oak (green) test images overlayed on the pixels of the example image (black). Only the area occupied by the pixels was represented."}
 plot_rgb_plane("g", "b", xlim = c(0.2, 0.6), ylim = c(0.1, 0.33))
 plot_pixels(ivy_oak_rgb, "g", "b", col = transparent_black)
 plot_pixels(test_oak_rgb, "g", "b", col = green)
@@ -128,9 +128,9 @@ plot_pixels(test_ivy_rgb, "g", "b", col = blue)
 plot_pixels(test_dead_rgb, "g", "b", col = brown)
 ```
 
-The plot shows that the clusters of pixels in the `ivy_oak_rgb` image correspond to dead leaves (on the left), and oak and ivy (on the right).
+Figure 4 shows that the clusters of pixels in the `ivy_oak_rgb` image correspond to dead leaves (on the left), and oak and ivy (on the right).
 
-The small areas taken as test images were not representative of the whole pixel set in the image, as they do not cover the same area as the black pixels. This is not a surprise given that a single sample was collected for each type of pixel.
+The small areas taken as test images were not representative of the whole pixel set in the image, as they do not cover the same area as the black pixels. This is not a surprise given that a single sample was collected for each type of pixel. In a real study, the set of test images must be selected to be representative of the classes. This is, obviously, a need for any method that uses a test set, not only for `pixelclasser`.
 
 Warning: plotting several million points in an R graph is an slow process. Be patient or use images as small as possible. Using a nice smartphone with a petapixel camera sensor to capture images is good for artistic purposes, but not always for efficient scientific work.
 
@@ -140,33 +140,33 @@ Defining the rules that classify the pixels is a matter of tracing straight line
 
 The rules are defined by setting the name of the rule, the colour variables to use, the coordinates of two points in the plane and a comparison operator. The exact placement of the line is an arbitrary decision, as the method does not include any mechanism to place it automatically.
 
-There are two methods to create the rule. The first uses the function `create_rule()`, which receives a list with the coordinates of two points defining a line in the selected subspace. In the following example, the points with coordinates (*g*, *b*) = (0.345, 1/3), and *(g,b)* = (0.40, 0.10) defined the position of the first line, and were selected by trial and error. The adequate operator must be included in the rule definition:
+There are two methods to create the rule. The first uses the function `create_rule()`, which receives a list with the coordinates of two points defining a line in the selected subspace, and returns a `pixel_rule` object. In the following example, the points with coordinates (*g*, *b*) = (0.345, 1/3), and *(g,b)* = (0.40, 0.10) defined the position of the first line, and were selected by trial and error. The adequate operator must be included in the rule definition:
   
 ```{r}
-rule_01 <- define_rule("rule_01", "g", "b", list(c(0.345, 1/3), c(0.40, 0.10)), "<")
-rule_02 <- define_rule("rule_02", "g", "b", list(c(0.345, 1/3), c(0.40, 0.10)), ">=")
+rule_01 <- pixel_rule("rule_01", "g", "b", list(c(0.345, 1/3), c(0.40, 0.10)), "<")
+rule_02 <- pixel_rule("rule_02", "g", "b", list(c(0.345, 1/3), c(0.40, 0.10)), ">=")
 ```
 
-Both rules are described by the same line but use different comparison operator. `rule_01` includes the pixels at the left (under) of the line and `rule_02` those at the right (over) and on the line, i.e. the dead leaves and the fresh leaves, respectively. Each line can generate two rules, but beware: if `>` and `<` define the rules, then the points on the line will not belong to any category, and if `>=` and `<=` are used, the points on the line will belong to the two categories simultaneously. The function that classifies the pixels can identify the second type of error, but if there are legitimate unclassified points, the first type can pass unnoticed.
+Both rules are described by the same line but use different comparison operator. `rule_01` includes the pixels at the left (under) of the line and `rule_02` those at the right (over) and on the line, i.e. the dead leaves and the fresh leaves, respectively. Each line can generate two rules, but beware: if `>` and `<` define the rules, then the points on the line will not belong to any category, and if `>=` and `<=` are used, the points on the line will belong to the two categories simultaneously. The function that classifies the pixels can identify the second type of error, but if there are legitimate unclassified points, the errors of the first type can pass unnoticed.
 
-The second method uses `place_rule()`, which is a wrapper for `graphics:locator()` that allows the user to select the two points by clicking in the rgb plot with the mouse:
+The second method uses `place_rule()`, which is a wrapper for `graphics::locator()` that allows the user to select the two points by clicking in the rgb plot with the mouse:
 
 ```
 rp01 <- place_rule("g", "b")
 rp02 <- place_rule("g", "b", "v")
-rule_07 <- define_rule("rule_07", "g", "b", rp02, ">=")
+rule_07 <- pixel_rule("rule_07", "g", "b", rp02, ">=")
 ```
-The function returns an object of class `rule_points` that can then be passed to `define_rule()` in the parameter `rule_points`. The second example produces a vertical line ("h" for horizontal lines), which would be difficult to produce by hand. To make the code self-contained, `create_rule()` is used in this vignette, but using `place_rule()` is the easiest way to define the rules. It is even easier to place the call to `place_rule()` in the call to `create_rule()` to avoid creating the intermediate `rule_points` object:
+The function returns an object of class `pixel_rule_points` that can then be passed to `pixel_rule()` in the parameter `line_points`. The second example produces a vertical line (use "h" for horizontal lines) When using these options the function adjusts the coordinates, as it would be difficult to create true vertical or horizontal lines with the mouse. To make the code run automatically, `create_rule()` is used in this vignette, but using `place_rule()` is the easiest way to define the rules. It is even easier to place the call to `place_rule()` in the call to `create_rule()` to avoid creating the intermediate `pixel_rule_points` object:
 
 ```
-rule_07 <- define_rule("rule_07", "g", "b", place_rule("g", "b"), "<")
+rule_07 <- pixel_rule("rule_07", "g", "b", place_rule("g", "b"), "<")
 ```
 
-Note that both `define_rule()` and the `rule_points` object must use the same colour variables as axis. `define_rule()` throws an error if this condition does not hold.
+Note that both `pixel_rule()` and the `pixel_rule_points` object must use the same colour variables as axis. `pixel_rule()` throws an error if this condition does not hold.
 
-The rule objects store the values passed as parameters, the parameters of the equation of the line (*a* and *c*), and a textual representation of the equation which will be evaluated by the classification function. To check the correctness of the rules, the line can be added to the plot:
+The rule objects store the values passed as parameters, the parameters of the equation of the line (*a* and *c*), and a textual representation of the equation which will be evaluated by the classification function. To check the correctness of the rules, the lines can be added to the plot, as in Fig. 5:
   
-```{r, fig.align="center", out.width = "50%"}
+```{r, fig.align="center", out.width = "50%", fig.cap="Figure 5. Same as Fig. 4 but the line between dead and live leaves (defining `rule01` and `rule02`) was added."}
 plot_rgb_plane("g", "b", xlim = c(0.2, 0.6), ylim = c(0.1, 0.33))
 plot_pixels(ivy_oak_rgb, "g", "b", col = transparent_black)
 plot_pixels(test_oak_rgb, "g", "b", col = green)
@@ -175,16 +175,16 @@ plot_pixels(test_dead_rgb, "g", "b", col = brown)
 plot_rule(rule_01, lty = 2, col = brown)
 ```
 
-In order to classify the fresh leaves into ivy and oak categories, more rules are needed. The pixels of the oak test image were plotted and used to define additional rules:
+In order to classify the fresh leaves into ivy and oak categories, more rules are needed. The pixels of the oak test image were plotted and used to define additional rules (again by trial and error):
 
 ```{r}
-rule_03 <- define_rule("rule_03","g", "b", list(c(0.35, 0.30), c(0.565, 0.10)), "<")
-rule_04 <- define_rule("rule_04","g", "b", list(c(0.35, 0.25), c(0.5, 0.25)), "<")
+rule_03 <- pixel_rule("rule_03","g", "b", list(c(0.35, 0.30), c(0.565, 0.10)), "<")
+rule_04 <- pixel_rule("rule_04","g", "b", list(c(0.35, 0.25), c(0.5, 0.25)), "<")
 ```
 
-Here is the plot of the pixels and the rules. Line type and colour were set using the graphical parameters `lty` and `col` (see `graphics::par)`) `...` argument of `plot_rule()`:
+Figure 6 shows the pixels of the oak test image and the lines that limit this class. Line type and colour were set using the graphical parameters `lty` and `col` (see `graphics::par)`) `...` argument of `plot_rule()`:
 
-```{r, fig.align="center", out.width = "50%"}
+```{r, fig.align="center", out.width = "50%", fig.cap="Figure 6. The pixels of the oak test image and the lines that limit this category. Note that the line separatin the dead leaves is used again."}
 plot_rgb_plane("g", "b", xlim = c(0.2, 0.6), ylim = c(0.1, 0.33), plot_limits = F, plot_guides = F)
 plot_pixels(test_oak_rgb, "g", "b", col = green)
 plot_rule(rule_01, lty = 2, col = green)
@@ -192,9 +192,9 @@ plot_rule(rule_03, lty = 2, col = green)
 plot_rule(rule_04, lty = 2, col = green)
 ```
 
-The ivy pixels are now plotted to check whether the rules can identify them. Labels to identify the lines and their associated rules were added to the plot, using the parameter `shift` to place them conveniently:
+Then the graph was redrawn (Fig. 7), with the ivy pixels plotted instead of the oak pixels to check whether the rules are adequate and enough to classify that class. Labels to identify the lines and their associated rules were added to the plot, using the parameter `shift` to place them conveniently:
   
-```{r, fig.align="center", out.width = "50%"}
+```{r, fig.align="center", out.width = "50%", fig.cap="Figure 7. The pixels of the ivy test image and the lines defining the rules to classify the oak pixels (not shown). The lines can be used to define the ivy category, but the overlay between the two classes prevents a complete separation between the two categories. Some of the pixels trespass into the oak area."}
 plot_rgb_plane("g", "b", xlim = c(0.2,0.6), ylim=c(0.1,0.33), plot_limits = F, plot_guides = F)
 plot_pixels(test_ivy_rgb, "g", "b", col = blue)
 
@@ -210,61 +210,61 @@ label_rule(rule_04, label = expression('L'[3]*' (R'[4]*',R'[6]*')'), shift = c(0
 
 The graph shows two problems: a) part of the ivy pixels are inside the area delimited by the oak rules, i.e. both categories overlap. As a consequence, some ivy pixels will be miss-classified. b) The shape of the ivy cluster is not convex.
 
-To solve the second problem, two subcategories must be defined as explained before. The first is delimited by *L~1~* and *L~3~*, and the second by *L~2~* and *L~3~*. To do this, two new rules are needed:
+To solve the second problem, two subcategories must be defined as explained before. There was no need to place additional lines in this case. The first subcategory is delimited by *L~1~* and *L~3~*, and the second by *L~2~* and *L~3~*. To do this, two new rules are needed:
   
 ```{r}
-rule_05 <- define_rule("rule_05", "g", "b", list(c(0.35, 0.30), c(0.565, 0.16)), ">=")
-rule_06 <- define_rule("rule_06", "g", "b", list(c(0.35, 0.25), c(0.5, 0.25)), ">=")
+rule_05 <- pixel_rule("rule_05", "g", "b", list(c(0.35, 0.30), c(0.565, 0.16)), ">=")
+rule_06 <- pixel_rule("rule_06", "g", "b", list(c(0.35, 0.25), c(0.5, 0.25)), ">=")
 ```
 
-There is an intentional error in the coordinates of the second point of `rule_05`, which are not the same as in `rule_03`. It is left here to show later how the internal checks of the classification function allow to detect it.
+There is an intentional error in the coordinates of the second point of `rule_05`, which should be the same as in `rule_03`. It is left here to show later how the internal checks of the classification function allow to detect such errors.
 
-Note that because no points can be found outside the blue triangle, its borders are implicit rules that close the polygons defined by the explicit rules, but that do not need to be created.
+Note that because no points can be found outside the blue triangle, its borders are implicit rules that close the polygons defined by the explicit rules.
 
 ### Creating the classifier objects ###
 
-After the rules have been defined, they must be included in classifier objects which will be used later by `classify_pixels()`. This function receives a list of objects of class `pixel_cat`, each containing the information needed to identify the pixels belonging to a particular category. These objects contain a list of objects `pixel_subcat`, each containing a list of objects of class `pixel_rule`. This is a nested structure which always has three levels (rule, subcategory, and category) even when no subcategories would be needed for the classification. In these simple cases, a subcategory object containing the rules is internally added to the category object. This consistency in the structure of the objects simplifies the code of `classify_pixels()`.
+After the rules have been defined, they must be included in classifier objects which will be used later by `classify_pixels()`. This function receives a list of objects of class `pixel_category`, each containing the information needed to identify the pixels belonging to a particular category. These objects contain a list of objects `pixel_subcategory`, each containing a list of objects of class `pixel_rule`. This is a nested structure which always has three levels (rule, subcategory, and category) even when no subcategories would be needed for the classification. In these simple cases, a subcategory object containing the rules is internally added to the category object (named `S0`). This consistency in the structure of the objects simplifies the code of `classify_pixels()`.
 
 Creating the classifiers is simple once the rules have been defined. The following code defines a class classifier that can identify the dead leaves:
   
 ```{r}
-cat_dead_leaves <- define_cat("dead_leaves", blue, rule_01)
+cat_dead_leaves <- pixel_category("dead_leaves", blue, rule_01)
 ```
 
-`define_cat()` needs a label for the category, a colour to identify the pixels if an image file is generated, and a list of rules that define the category. Here, the list contains a single rule. This is a simple case where no subcategories are needed and a list of rules suffice to classify the pixels. See below for a more complex case. The corresponding classifier for the living leaves is:
+`pixel_category()` needs a label for the category, a colour to identify the pixels if an image file is generated, and a list of rules that define the category. Here, the list contains a single rule. This is a simple case where no subcategories are needed and a list of rules suffice to classify the pixels. See below for a more complex case. The corresponding classifier for the living leaves is:
 
 ```{r}
-cat_living_leaves <- define_cat("living_leaves", yellow, rule_02)
+cat_living_leaves <- pixel_category("living_leaves", yellow, rule_02)
 ```
 
-In these examples `define_cat()` detects that the the list contains only rules, not subcategories, and wraps them into an object of type `pixel_subcat`.
+In these examples `pixel_category()` detects that the the list contains only rules, not subcategories, and wraps them into an object of type `pixel_subcategory`.
 
 A classifier object for oak pixels needs three rules:
 
 ```{r}
-cat_oak_leaves <- define_cat("oak_leaves", green, rule_02, rule_03, rule_04)
+cat_oak_leaves <- pixel_category("oak_leaves", green, rule_02, rule_03, rule_04)
 ```
 
 Finally, the classifier for ivy pixels is the most complex, as it is composed of two subcategory objects that must be defined explicitly and then included in the class classifier:
 
 ```{r}
-subcat_ivy01 <- define_subcat("ivy01", rule_02, rule_06)
-subcat_ivy02 <- define_subcat("ivy02", rule_04, rule_05)
+subcat_ivy01 <- pixel_subcategory("ivy01", rule_02, rule_06)
+subcat_ivy02 <- pixel_subcategory("ivy02", rule_04, rule_05)
 
-cat_ivy_leaves <- define_cat("ivy_leaves", yellow, subcat_ivy01, subcat_ivy02)
+cat_ivy_leaves <- pixel_category("ivy_leaves", yellow, subcat_ivy01, subcat_ivy02)
 ```
 
-Note that rules and subcategories cannot be mixed in the list, so sometimes a subcategory object containing a single rule should be created by the user before creating the category object. `define_cat()` checks for the type of the objects in the list and complains if they are not adequate.
+Note that rules and subcategories cannot be mixed in the list passed to `pixel_category()`, so sometimes a subcategory object containing a single rule must be created by the user to include it the category object with other subcategories. `pixel_category()` checks for the type of the objects in the list and complains if they are not adequate or a mix of classes.
 
 ### Classifying the pixels ###
 
-Function `classify_pixels()` uses a list of categories to classify the pixels. As a preliminary example, the example image will be classified in dead and living leaves. The parameters are the object to classify and the list of category objects:
+Function `classify_pixels()` uses a list of categories to classify the pixels. As a preliminary example, the example image will be classified in dead and living leaves. The parameters are the object to classify (of class `pixel_transformed_image`) and the list of `pixel_category` objects:
   
 ```{r}
 dead_live_classified <- classify_pixels(ivy_oak_rgb, cat_dead_leaves, cat_living_leaves)
 ```
 
-Note that a category named `unclassified` is automatically added to the classes defined by the user. With the rule set used in this example, the `unclassified` class must contain zero pixels. The function outputs counts of pixels in each classes, which are useful to verify the consistency of the rules. The function also detects duplicate pixels, i e those counted in more than one class (the sum of the pixels in each class is larger than the total number of pixels). If the consistency of the rules has been verified, these messages can be suppressed by `verbose = FALSE` in the function call.
+Note that a category named `unclassified` is automatically added to the classes defined by the user. With the rule set used in this example, the `unclassified` class must contain zero pixels. The function outputs counts of pixels in each classes, which are useful to verify the consistency of the rules. The function also detects duplicate pixels, i e those counted in more than one class (the sum of the pixels in each class is larger than the total number of pixels).These messages can be suppressed by setting `verbose = FALSE` in the function call.
 
 The result can be saved as a JPEG (or TIFF) file:
 
@@ -283,25 +283,39 @@ ivy_oak_classified <- classify_pixels(ivy_oak_rgb, cat_dead_leaves, cat_ivy_leav
 The function informs that several points were left unclassified. This is the consequence of the error in the definition of `rule_05` noted above. If the error is corrected, and the image classified again:
 
 ```{r}
-rule_05 <- define_rule("rule_05", "g", "b", list(c(0.35, 0.30), c(0.565, 0.10)), ">=")
-subcat_ivy02 <- define_subcat("ivy02", rule_04, rule_05)
-cat_ivy_leaves <- define_cat("ivy_leaves", yellow, subcat_ivy01, subcat_ivy02)
+rule_05 <- pixel_rule("rule_05", "g", "b", list(c(0.35, 0.30), c(0.565, 0.10)), ">=")
+subcat_ivy02 <- pixel_subcategory("ivy02", rule_04, rule_05)
+cat_ivy_leaves <- pixel_category("ivy_leaves", yellow, subcat_ivy01, subcat_ivy02)
 ivy_oak_classified <- classify_pixels(ivy_oak_rgb, cat_dead_leaves, cat_ivy_leaves, cat_oak_leaves)
 ```
 
-the result is correct and it can be saved, as a `TIFF` file in this case:
+no unclassified pixels remain. It can now be saved, in this case as a `TIFF` file:
 
 ```{r, eval = FALSE}
 save_classif_image(ivy_oak_classified, "IvyOakClassified.TIFF")
 ```
 
-The following figure shows the original image and the results of the two classifications.
+Figure 8 shows the original image and the results of the two classifications.
 
-```{r echo=FALSE, fig.align='center'}
+```{r echo=FALSE, fig.align='center', out.width= "150%", fig.cap="Figure 8. From left to right: the original example image, the image produced by the first classification (dead vs. living leaves) and the image produced by the second classification (dead/ivy/oak leaves)."}
 knitr::include_graphics('../inst/extdata/ClassifResults.png')
 ```
 
 Dead and fresh leaves were correctly differentiated in the first classification. The second classification was accurate for dead and oak pixels but, as expected, part of the ivy pixels were miss-classified as oak pixels because of the overlap between these two categories.
+
+### Measuring the quality of the classification ###
+
+A qualitative assessment of the results of the classification can be done by inspecting the classified image, but a quantitative measure of the errors is necessary in many cases. A simple method for error estimation is to apply the classification rules to the images in the training set. If the rules are well chosen and the classes are separable, no errors would be expected. Function `classify_pixels()` generates a report on the classification of the pixels that is useful for this purpose:
+
+```{r}
+test_dead <- classify_pixels(test_dead_rgb, cat_dead_leaves, cat_ivy_leaves, cat_oak_leaves)
+test_ivy <- classify_pixels(test_ivy_rgb, cat_dead_leaves, cat_ivy_leaves, cat_oak_leaves)
+test_oak <- classify_pixels(test_oak_rgb, cat_dead_leaves, cat_ivy_leaves, cat_oak_leaves)
+```
+
+In these examples no errors were produced when classifying the dead leaves pixels, but 709 out of 11108 ivy pixels (6.4 %) were erroneously classified as oak pixels, and 328 out of 8855 oak pixels (3.7 %) were classified as ivy pixels.
+
+Comparing these proportions with the results of the classification of the whole image indicates that these values underestimate the errors, specially for the ivy pixels. This was caused by the deficiencies of the test set in this simplified example. To see a real example of the use of `pixelclasser`, with a better test set and an assessment of the classification errors in the context of the experimental error of the whole study, see Varela et al. (2021).
 
 # References #
 
@@ -309,4 +323,4 @@ Bennet, K. P. and C. Campbell (2000). Support vector machines: hype or Halleluia
 
 Cortes, C. and V. Vapnik (1995). Support-vector networks. Machine Learning 20, 273–297.
 
-Real, C., Cruz de Carvalho, R., García-Seoane, R., Branquinho, C. and Varela, Z. (2021). A simplified support vector machine method for image classification. Submitted to Methods in Ecology and Evolution.
+Varela, Z.; Real, C.; Branquinho, C.; Afonso do Paço, T. and Cruz de Carvalho, R. (2021). Optimising Artificial Moss Growth for Environmental Studies in the Mediterranean Area. Plants, 10, 2523.

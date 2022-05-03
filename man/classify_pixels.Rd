@@ -2,63 +2,75 @@
 % Please edit documentation in R/classify_pixels.R
 \name{classify_pixels}
 \alias{classify_pixels}
+\alias{is.classified_image}
+\alias{summary.pixel_classified_image}
 \title{Classifies the pixels of an image}
 \usage{
 classify_pixels(image_prop, ..., unclassed_colour = "black", verbose = TRUE)
+
+is.classified_image(x)
+
+\method{summary}{pixel_classified_image}(object, ...)
 }
 \arguments{
-\item{image_prop}{an array containing the image. It must be an
-object produced with function \code{read_image()}.}
+\item{image_prop}{an object of class \code{"pixel_transformed_image"} created
+by function \code{read_image()}.}
 
-\item{\dots}{a list of objects of class \code{pixel_cat} containing the
-classification rules.}
+\item{\dots}{in \code{classify_pixels()} a list of objects of class
+\code{"pixel_category"}; in \code{summary()}, additional parameters (none
+needed by now).}
 
-\item{unclassed_colour}{a character string setting the colour to be assigned
-to unclassified pixels. Defaults to "black".}
+\item{unclassed_colour}{a character string defining the colour of the
+unclassified pixels. Defaults to \code{"black"}.}
 
-\item{verbose}{a logical value. When TRUE (default) the function prints some
-statistics about the classification.}
+\item{verbose}{a logical value. When \code{TRUE} (default) the function
+prints some statistics about the classification.}
+
+\item{x}{the R object being tested.}
+
+\item{object}{an object of class \code{"pixel_classified_image"}.}
 }
 \value{
-Returns an object of class \code{classified_image}, which is a list
-  containing nested lists. Each first-level element corresponds to one of the
-  pixel categories and its name is the category name. They contains the
-  second-level list, which have the following elements:
-\itemize{
+Returns an object of class \code{"pixel_classified_image"}, which is
+  a list containing nested lists. Each first-level element corresponds to one
+  of the pixel categories and its name is the category name. They contains
+  the second-level list, which have the following elements:
+  \itemize{
   \item \code{colour}: a matrix defining a colour to paint the pixels in the
-  classified image. Inherited from the \code{pixel_class} object defining the
+  classified image. Inherited from the \code{"pixel_class"} object defining
+  the
   class.
-  \item \code{incid_mat}: a logical matrix where \code{TRUE} values indicate
-  that the pixel belongs to this pixel category.
-}
+  \item \code{incid_mat}: a logical matrix where \code{TRUE} values
+  indicate that the pixel belongs to this pixel category. }
 }
 \description{
 Classifies the pixels represented in an object of class
-\code{transformed_image} using the rules contained in a list of objects of
-class \code{pixel_cat}.
+\code{"pixel_transformed_image"} using the rules contained in a list of
+objects of class \code{"pixel_category"}.
 }
 \details{
-This function generates a set of incidence matrices indicating
-  whether a pixel belongs to a pixel category or not. An additional matrix
-  identifies the pixels that do not belong to the defined categories, i e
-  unclassed pixels. Depending on how the rules were defined, it can be void
-  or contain pixels, but it is always present and named \code{unclassified}.
+This function uses the rules contained in \code{"pixel_category"}
+  objects to create a set of incidence matrices indicating whether a pixel
+  belongs to a pixel category or not.
 
   To create the incidence matrices for each category, a matrix for each rule
   is created and then combined with the matrices of the other using the
-  \code{and} operator.
+  \code{and} operator. An additional matrix identifies the pixels that do not
+  belong to the defined categories, i.e. unclassed pixels. It is always
+  present and named \code{unclassified} even in the case that all pixels were
+  assigned to some class.
 
-  When a set of subcategories is used, the procedure is the same for each
-  subcategory and then the matrices of the subcategories are combined again,
-  this time using the \code{or} operator. See the help for
-  \code{define_subcat} for more details.
+  When a category is divided in a set of subcategories the pixels are
+  classfied in subcategories as explained in the previous paragraph, and then
+  the matrices of the subcategories are combined again, this time using the
+  \code{or} operator. See \code{"pixel_subcategory"} for more details.
 
   \code{unclassed_colour} can be specified in any form understood by
   \code{grDevices::col2grb}.
 }
 \examples{
 
-# The series of steps to classify a image supplied in the package
+# These are the steps to classify an example image supplied in the package
 
 yellow <- "#ffcd0eff"
 blue <- "#5536ffff"
@@ -66,18 +78,18 @@ blue <- "#5536ffff"
 ivy_oak_rgb <- read_image(system.file("extdata", "IvyOak400x300.JPG",
                           package = "pixelclasser"))
 
-rule_01 <- define_rule("rule_01", "g", "b",
+rule_01 <- pixel_rule("rule_01", "g", "b",
                        list(c(0.345, 1/3), c(0.40, 0.10)), comp_op = "<")
-rule_02 <- define_rule("rule_02", "g", "b",
+rule_02 <- pixel_rule("rule_02", "g", "b",
                        list(c(0.345, 1/3), c(0.40, 0.10)), comp_op = ">=")
 
-cat_dead_leaves <- define_cat("dead_leaves", blue, rule_01)
-cat_living_leaves <- define_cat("living_leaves", yellow, rule_02)
+cat_dead_leaves <- pixel_category("dead_leaves", blue, rule_01)
+cat_living_leaves <- pixel_category("living_leaves", yellow, rule_02)
 
 ivy_oak_classified <- classify_pixels(ivy_oak_rgb, cat_dead_leaves,
                         cat_living_leaves)
 
 }
 \seealso{
-\code{\link{define_cat}}, \code{\link[grDevices]{col2rgb}}.
+\code{\link{pixel_category}}, \code{\link[grDevices]{col2rgb}}.
 }

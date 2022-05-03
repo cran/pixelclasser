@@ -2,9 +2,12 @@
 % Please edit documentation in R/place_rule.R
 \name{place_rule}
 \alias{place_rule}
+\alias{is.rule_points}
 \title{Places a line on the rgb plot}
 \usage{
 place_rule(x_axis, y_axis, line_type = "f")
+
+is.rule_points(x)
 }
 \arguments{
 \item{x_axis}{a character string indicating the colour variable that
@@ -14,35 +17,37 @@ corresponds to the x axis, one of \code{"r"}, \code{"g"} or \code{"b"}.}
 corresponds to the y axis, one of \code{"r"}, \code{"g"} or \code{"b"}.}
 
 \item{line_type}{a character string indicating that the line is vertical
-\code{"v"}, horizontal \code{"h"} or free (\code{"f"}, the default).}
+(\code{"v"}), horizontal (\code{"h"}) or free (\code{"f"}, the default).}
+
+\item{x}{the R object being tested}
 }
 \value{
-A list of class \code{rule_points} containing the following elements:
+An object of class \code{"pixel_rule_points"} containing these
+  elements:
 \itemize{
 \item \code{x_axis}: a character string containing the colour variable
-  selected as \code{x} axis.
+  selected as \code{x} axis (one of "r, "g or "b").
 \item \code{y_axis}: a character string containing the colour variable
   selected as \code{y} axis.
-\item \code{first_point}: coordinates of the start point of the line.
-\item \code{second_point}: coordinates of the end point of the line.
 }
 }
 \description{
-A wrapper function for \code{graphics::locator} that makes the creation
-of rules easier.
+A wrapper function for \code{graphics::locator} that helps in creating rules.
 }
 \details{
-This function calls \code{graphics::locator} allowing to select two
-  points, plots the line joining these points and returns a list
-  containing their coordinates. The coordinates are rearranged to
-  pass them to \code{define_rule()}.
+This function calls \code{graphics::locator} on a previously plotted
+  rgb plane to select two points with the mouse. Then it plots the line
+  joining them and returns an object of class \code{"pixel_rule_object"}.
+  These objects are passed as parameters to \code{pixel_rule()} to create
+  \code{"pixel_rule"} objects.
 
   True horizontal and vertical lines are difficult to create by hand. In
   these cases, specifying \code{"vertical"} or \code{"horizontal"} (partial
-  match allowed, i e "h") will copy the appropriate coordinate value from the
-  first point to the second. Note that this is done after \code{locator()}
-  returns, so the plot will show the line joining the original points, not
-  the corrected ones. Use \code{plot_rule()} to see corrected line.
+  match allowed, i.e. \code{"h"}) will copy the appropriate coordinate value
+  from the first point to the second to make them the same. Note that this is
+  done after \code{locator()} returns, so the plot will show the line joining
+  the original points, not the corrected ones. Use \code{plot_rule()} to see
+  the corrected line.
 }
 \examples{
 \dontrun{
@@ -53,6 +58,6 @@ line02 <- place_rule("r", "g", "h")     # A horizontal line
 
 }
 \seealso{
-\code{\link[graphics]{locator}}, \code{\link{define_rule}},
+\code{\link[graphics]{locator}}, \code{\link{pixel_rule}},
   \code{\link{plot_rule}}, \code{\link{plot_rgb_plane}}
 }

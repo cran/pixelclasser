@@ -7,22 +7,25 @@
 plot_pixels(image_rgb, x_axis, y_axis, ...)
 }
 \arguments{
-\item{image_rgb}{an object produced by \code{read_image()}.}
+\item{image_rgb}{an object of class \code{"pixel_transformed_image"} produced
+by \code{read_image()}.}
 
-\item{x_axis}{a character string indicating which colour variable use as x.}
+\item{x_axis}{a character string indicating the colour variable that
+corresponds to the x axis, one of \code{"r"}, \code{"g"} or \code{"b"}.}
 
-\item{y_axis}{a character string indicating which colour variable use as y.}
+\item{y_axis}{a character string indicating the colour variable that
+corresponds to the x axis.}
 
-\item{\dots}{additional graphical parameters, mainly to set the colour
-(\code{col}) of the points.}
+\item{\dots}{additional graphical parameters to be passed to
+\code{graphics::points()}, mainly to set the colour (\code{col}) of the
+points.}
 }
 \value{
 The function does not return any value.
 }
 \description{
-This function is a wrapper for function \code{points()} in package
-\code{graphics} for plotting the pixels of a transformed rgb image on the
-triangular diagram previously created by \code{plot_rgb_plane()}.
+This function is a wrapper for function \code{graphics::points()} for plotting the pixels of an object of 
+class \code{"pixel_transformed_image"} on an rgb plot.
 }
 \details{
 It is advantageous to specify a colour such as \code{"#00000005"}
@@ -32,14 +35,13 @@ It is advantageous to specify a colour such as \code{"#00000005"}
   opaque colour, so \code{"#000000"} is the same as \code{"#000000ff"}. The
   colours can be specified in any form understandable by
   \code{grDevices::col2rgb}, but the hexadecimal string allows setting the
-  colour transparency and it is the preferred style. Note also that the
-  points are plotted using pch = ".", as any other symbol would clutter the
-  graph.
+  colour transparency. Note also that the points are plotted using \code{pch
+  = "."}, as any other symbol would clutter the graph.
   
-  Warning: plotting several million points in an R graph is a slow process. 
-  Be patient or reduce the size of the images as much as possible.
-  Having a nice smartphone with a petapixel camera sensor is good for
-  artistic purposes, but not always for efficient scientific work.
+  Warning: plotting several million points in an R graph is a slow process.
+  Be patient or reduce the size of the images as much as possible. A nice
+  smartphone with a petapixel camera sensor is good for artistic purposes,
+  but not always for efficient scientific work.
 }
 \examples{
 

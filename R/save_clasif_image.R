@@ -1,17 +1,18 @@
 #' Saves a classified image in TIFF or JPEG format
 #'
-#' Creates an image file in TIFF or JPEG format from an array of class
-#' \code{classified_image}.
+#' Creates an image file in JPEG or TIFF format from an object of class
+#' \code{"pixel_classified_image"}.
 #'
-#' @param classified_image an object of class \code{classified_image}.
+#' @param classified_image an object of class \code{"pixel_classified_image"}.
 #' @param file_name a character string with the name of the output file,
 #'   including the extension.
 #' @param ... further parameters to pass to functions \code{writeJPG} and
-#'   \code{writeTIFF}. If void, the default values of these functions are used.
+#'   \code{writeTIFF}. If not used, the default values of these functions are
+#'   used.
 #'
 #' @return It does not return anything, only creates the file.
 #'
-#' @details The type of the output file (jpeg or tiff) is selected from the
+#' @details The type of the output file (JPEG or TIFF) is selected from the
 #'   extension included in the file name. It must be one of \code{("jpg", "JPG",
 #'   "jpeg", "JPEG", "tif", "TIF", "tiff", "TIFF")}.
 #'
@@ -44,21 +45,29 @@ save_classif_image <- function(classified_image, file_name, ...){
   b <- 3
 
   bands <- c(r, g, b)
+  
+  if(!is.classified_image(classified_image)){
+    stop('Object ', deparse(substitute(classified_image)), ' is of class ', 
+         class(classified_image),
+         ' but must be of class "pixel_classified_image"', call. = FALSE)
+  }
 
   file_name_elements <- unlist(strsplit(file_name, "[.]"))
 
   if (!(file_name_elements[length(file_name_elements)] %in%
         c("jpg", "JPG", "jpeg", "JPEG", "tif", "TIF", "tiff", "TIFF"))){
-    stop("The extension of ", file_name, " is not 'jpg', 'tif' or equivalent 
-         extension.", call. = FALSE)
+    stop('The file type of ', file_name, ' is ',
+         file_name_elements[length(file_name_elements)],
+         ' but must be "jpg", "JPG", "jpeg", "JPEG",
+         tif", "TIF", "tiff" or "TIFF".')
   }
 
   image_array <- array(dim = c(dim(classified_image[[1]]$incid_mat), 3), data=0)
   for (band in bands){
-    for (pixel_cat in (1:(length(classified_image) - 1))){
+    for (pixel_category in (1:(length(classified_image) - 1))){
       image_array[,, band] <- image_array[,, band] +
-                              classified_image[[pixel_cat]]$incid_mat * 
-                              classified_image[[pixel_cat]]$colour[band, 1]
+                              classified_image[[pixel_category]]$incid_mat * 
+                              classified_image[[pixel_category]]$colour[band, 1]
     }
   }
   if (file_name_elements[length(file_name_elements)] %in%

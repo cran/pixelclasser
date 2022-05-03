@@ -45,35 +45,35 @@ class(rule06) <- 'pixel_rule'
 
 subcat01 <- list("name" = "Subcat01", "rules" = list("Rule01" = rule01, 
                                                      "Rule04" = rule04))
-class(subcat01) <- "pixel_subcat"
+class(subcat01) <- "pixel_subcategory"
 
 subcat02 <- list("name" = "Subcat02", "rules" = list("Rule01" = rule01, 
                                                      "Rule06" = rule06))
-class(subcat02) <- "pixel_subcat"
+class(subcat02) <- "pixel_subcategory"
 
 # Creation of class objects ----------------------------------------------------
 subcatS0 <- list("name" = "S0", "rules" = list("Rule05" = rule05, 
                                                "Rule04" = rule04))
-class(subcatS0) <- "pixel_subcat"
+class(subcatS0) <- "pixel_subcategory"
 
 cat_A <- list("name" = "Cat_A", "colour" = grDevices::col2rgb("red")/255,
               "subcats" = list("S0" = subcatS0))
-class(cat_A) <- "pixel_cat"
+class(cat_A) <- "pixel_category"
 
 subcatS0 <- list("name" = "S0", "rules" = list("Rule01" = rule01,
                                                "Rule06" = rule06))
-class(subcatS0) <- "pixel_subcat"
+class(subcatS0) <- "pixel_subcategory"
 cat_B <- list("name" = "Cat_B", "colour" = grDevices::col2rgb("green")/255,
               "subcats" = list("S0" = subcatS0))
-class(cat_B) <- "pixel_cat"
+class(cat_B) <- "pixel_category"
 
 subcatS0 <- list("name" = "S0", "rules" = list("Rule03" = rule03,
                                                "Rule02" = rule04))
-class(subcatS0) <- "pixel_subcat"
+class(subcatS0) <- "pixel_subcategory"
 cat_C <- list("name" = "Cat_C", "colour" = grDevices::col2rgb("blue")/255,
               "subcats" = list("S0" = subcatS0))
-class(cat_C) <- "pixel_cat"
+class(cat_C) <- "pixel_category"
 
 cat_D <- list("name" = "Cat_D", "colour" = (grDevices::col2rgb("green")/255),
               "subcats" = list("subcat01" = subcat01, "subcat02" = subcat02))
-class(cat_D) <- "pixel_cat"
+class(cat_D) <- "pixel_category"

@@ -2,21 +2,33 @@
 % Please edit documentation in R/read_image.R
 \name{read_image}
 \alias{read_image}
-\title{Imports a jpg or tiff file.}
+\alias{is.transformed_image}
+\alias{summary.pixel_transformed_image}
+\title{Imports  and transforms a jpg or tiff file.}
 \usage{
 read_image(file_name)
+
+is.transformed_image(x)
+
+\method{summary}{pixel_transformed_image}(object, ...)
 }
 \arguments{
 \item{file_name}{A character string containing the name of the image file.}
+
+\item{x}{the R object being tested}
+
+\item{object}{an object of class \code{"pixel_transformed_image"}.}
+
+\item{\dots}{other parameters passed to the function.}
 }
 \value{
-Returns an array of dimensions \code{r x c x 3} and class
-  \code{transformed_image}, being \code{r} and \code{c} the number of rows
-  and columns in the image. The last dimension corresponds to the \code{R},
-  \code{G} and \code{B} variables (= bands) that define the colours of the
-  pixels. The values in the array are the proportions
-  of each colour (\code{r, g, b}), i.e. \code{r} = \code{R} / (\code{R + G +
-  B}), and so on.
+Returns an object of class  \code{"pixel_transformed_image"}, which
+  is an array of dimensions \code{r x c x 3},  being \code{r} and \code{c}
+  the number of rows and columns in the image. The last dimension corresponds
+  to the original \code{R}, \code{G} and \code{B} variables (= bands) that
+  define the colours of the pixels. The values in the array are the
+  proportions of each colour (\code{r, g, b}), i.e. \code{r} = \code{R} /
+  (\code{R + G + B}), and so on.
 }
 \description{
 Imports an image file (in JPEG or TIFF format) into an array, and converts
@@ -24,19 +36,19 @@ the original \code{R}, \code{G} and \code{B} values in the file into
 proportions (\code{r}, \code{g} and \code{b} variables).
 }
 \details{
-This function calls the functions \code{readJPEG()} and
-  \code{readTIFF()} in packages \code{jpeg} and \code{tiff} to import the
-  data into an R array. Then it transforms the data into proportions
+This function calls the functions \code{jpeg::readJPEG()} or
+  \code{tiff::readTIFF()} to import the image into an R array. Then it
+  transforms the data into proportions
 }
 \examples{
 
 # An example that loads the example file included in the package
-ivy_oak_rgb <- read_image(system.file("extdata", "IvyOak400x300.JPG", 
+ivy_oak_rgb <- read_image(system.file("extdata", "IvyOak400x300.JPG",
                                        package = "pixelclasser"))
 
 }
 \seealso{
 For more information about jpeg and tiff file formats, see the help
-  pages of \code{\link[jpeg]{readJPEG}} and \code{\link[tiff]{readTIFF}}
-  functions in packages \code{jpeg} and \code{tiff}, respectively.
+  pages of \code{\link[jpeg]{readJPEG}} and
+  \code{\link[tiff]{readTIFF}} functions.
 }
