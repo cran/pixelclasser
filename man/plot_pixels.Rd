@@ -24,8 +24,9 @@ points.}
 The function does not return any value.
 }
 \description{
-This function is a wrapper for function \code{graphics::points()} for plotting the pixels of an object of 
-class \code{"pixel_transformed_image"} on an rgb plot.
+This function is a wrapper for function \code{graphics::points()} for
+plotting the pixels of an object of class \code{"pixel_transformed_image"} on
+an rgb plot.
 }
 \details{
 It is advantageous to specify a colour such as \code{"#00000005"}
@@ -37,7 +38,7 @@ It is advantageous to specify a colour such as \code{"#00000005"}
   \code{grDevices::col2rgb}, but the hexadecimal string allows setting the
   colour transparency. Note also that the points are plotted using \code{pch
   = "."}, as any other symbol would clutter the graph.
-  
+
   Warning: plotting several million points in an R graph is a slow process.
   Be patient or reduce the size of the images as much as possible. A nice
   smartphone with a petapixel camera sensor is good for artistic purposes,

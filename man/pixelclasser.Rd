@@ -3,6 +3,7 @@
 \docType{package}
 \name{pixelclasser}
 \alias{pixelclasser}
+\alias{pixelclasser-package}
 \title{pixelclasser: Functions to classify pixels by colour}
 \description{
 \code{pixelclasser} contains functions to classify the pixels of a digital

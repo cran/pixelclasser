@@ -1,4 +1,4 @@
-843fdf81206e5be9a0f29ebf2a869656 *DESCRIPTION
+8f1cb50a548b7e29c9f4ad743a7565af *DESCRIPTION
 1ebbd3e34237af26da5dc08a4e440464 *LICENSE
 97299626ef317c9f4bbfcf21f7ec7036 *NAMESPACE
 4abfca510439dfd00e9a9afc39d91866 *R/classify_pixels.R
@@ -7,7 +7,7 @@
 0916ceb8321cbca45f589ff665c72c34 *R/pixel_category.R
 619e25673a242ee8d1dc625474da73d3 *R/pixel_rule.R
 fd35b767f374cda8acc71e4611434820 *R/pixel_subcategory.R
-2772b51fb8db047d7da2778939e7f515 *R/pixelclasser-package.R
+79a0e930d7db1d4ef59c2b741d4fbecb *R/pixelclasser-package.R
 eef1c7fadda8a87168a6cf66529ca7b3 *R/place_rule.R
 5d455f45a63ed8bcd6efe957387d16cd *R/plot_pixels.R
 5de2a8797959716cd0b987c198963c08 *R/plot_rgb_plane.R
@@ -16,10 +16,10 @@ c2fb3782ab5a00594c8399814ef9fc32 *R/plot_rule.R
 fb3bec6bb523cdd9ee4fed7b79b05f26 *R/save_clasif_image.R
 7988c2da2945838e6ae08fd3192f6681 *R/transform_colours.R
 44d230164033ea8237e76e0cc13d0f74 *build/vignette.rds
-6ef563d217c5b489a4366d8eb59b1bc2 *inst/NEWS.Rd
+aaef460dbcca37ed270f52b199b47862 *inst/NEWS.Rd
 157b54d732a620ea7b9561f4590b1f03 *inst/doc/pixelclasser.R
 a79973111951b2913ccd4d3bbcedbf08 *inst/doc/pixelclasser.Rmd
-bfcf3b45591905bfcbef80f531a423ec *inst/doc/pixelclasser.html
+794e526b186ed8595eaa77a88a269b21 *inst/doc/pixelclasser.html
 fa2b91f41b83e1b3c5156e2966e2d761 *inst/extdata/ClassifResults.png
 35af1ae9d355ba4f0d07a2bcc519d677 *inst/extdata/ExampleImages.png
 032fe6f6d5caba9b275b59579cde2eec *inst/extdata/IvyOak400x300.JPG
@@ -40,10 +40,10 @@ fffe5965a7eb70223163d53c0bcefa6c *inst/extdata/test_image_classified.TIFF
 0acb023d66228c99580ef1a1a124a404 *man/pixel_category.Rd
 317a4dfe8c8668b23c138784d812a0c8 *man/pixel_rule.Rd
 143714da6360658d2ca7b37dfea9aa5a *man/pixel_subcategory.Rd
-91c265f0c4f47e76af01bfe42db63316 *man/pixelclasser.Rd
+f89011ea21b1b8c26d2beb9ccfae274b *man/pixelclasser.Rd
 37d17c225752fef359345d41018b3c5c *man/place_rule.Rd
-3160f3083b86a6b0ce2edfd4d600dbbd *man/plot_pixels.Rd
-6bf0cb63ea593e4d53ca80b28758ba08 *man/plot_rgb_plane.Rd
+385511c7e3a4e57374cab417cff1eaad *man/plot_pixels.Rd
+c9c4916dd0c182cf785e204dc0ad0508 *man/plot_rgb_plane.Rd
 096d54bf574b64024198ed42d3e4c6b8 *man/plot_rule.Rd
 b6f4176fec82ffacf17433353357781f *man/read_image.Rd
 7bfc2df0514875302d9f2b9e989eca4a *man/save_classif_image.Rd

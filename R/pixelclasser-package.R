@@ -36,4 +36,5 @@
 #' @name pixelclasser
 #' @import jpeg tiff
 #'   
+"_PACKAGE"
 NULL

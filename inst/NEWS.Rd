@@ -2,6 +2,13 @@
 \title{pixelclasser News}
 \encoding{UTF-8}
 
+\section{Changes in version 1.1.1}{
+  \itemize{
+    \item Using _PACKAGE in pixelclasser-package.R to obtain correct access to
+    the package overview file. Required after changes in roxygen2 behaviour.
+  }
+}
+
 \section{Changes in version 1.1.0}{
     
   \subsection{NEW FEATURES}{

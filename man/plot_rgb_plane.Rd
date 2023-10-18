@@ -34,11 +34,11 @@ plotting functions.}
 The function does not return any value.
 }
 \description{
-Plots the plane of the two variables selected by the user, one of (\code{r}, \code{g}
-or \code{b}), and lines identifying the triangular area that can contain pixels.
-representing the pixels of a transformed image and lines representing the
-rules can be later added to the plot using functions \code{plot_pixels()} and
-\code{plot_rule()}.
+Plots the plane of the two variables selected by the user, one of (\code{r},
+\code{g} or \code{b}), and lines identifying the triangular area that can
+contain pixels. representing the pixels of a transformed image and lines
+representing the rules can be later added to the plot using functions
+\code{plot_pixels()} and \code{plot_rule()}.
 }
 \details{
 Because the variables were transformed into proportions, the pixels
